@@ -7,9 +7,9 @@
 #include<windows.h>
 using namespace std;  
 //srand( (unsigned)time( NULL ) ); // Random number seed   It can't be used here 
-int pane[4][4]; //The board
+int board[4][4]; //The board
 int N=1; //Two to the n
-void showpane() // According to The board
+void showboard() // According to The board
 {
  cout<<setw(46)<<"X2048 by Reason"<<endl;
  cout<<setw(50)<<" |-----------------------|"<<endl;
@@ -19,10 +19,10 @@ void showpane() // According to The board
   for(int j=0;j<=3;j++)
   {
    //SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED); 
-   if(pane[i][j]==0)
+   if(board[i][j]==0)
     cout<<setw(2)<<"|"<<setw(4)<<" ";
    else
-    cout<<setw(2)<<"|"<<setw(4)<<pane[i][j];
+    cout<<setw(2)<<"|"<<setw(4)<<board[i][j];
 
    if(j==3)
     {
@@ -37,14 +37,14 @@ void newgame() //Start the game
  N=1;
  for(int i=0;i<=3;i++) // Initialize the The board
   for(int j=0;j<=3;j++)
-   pane[i][j]=0;
+   board[i][j]=0;
  srand( (unsigned)time( NULL ) );
  int m=rand()%4;
  int n=rand()%4;
  int p=rand()%4;
  int q=rand()%4;
- pane[m][n]=pane[p][q]=2;
- showpane();
+ board[m][n]=board[p][q]=2;
+ showboard();
 }
 int if2n(int x) // judge x Whether it is Two to the n
 {
@@ -67,10 +67,10 @@ int upmove() //Move up
  for(int j=0;j<=3;j++)
   for(int i=0;i<3;i++)
   {
-   if(if2n(pane[i][j]+pane[i+1][j])==1)
+   if(if2n(board[i][j]+board[i+1][j])==1)
    {
-    pane[i][j]=pane[i][j]+pane[i+1][j];
-    pane[i+1][j]=0;
+    board[i][j]=board[i][j]+board[i+1][j];
+    board[i+1][j]=0;
     flag=1;
    }
   }
@@ -82,10 +82,10 @@ int downmove() //Move down
  for(int j=0;j<=3;j++)
   for(int i=3;i>0;i--)
   {
-   if(if2n(pane[i][j]+pane[i-1][j])==1)
+   if(if2n(board[i][j]+board[i-1][j])==1)
    {
-    pane[i][j]=pane[i][j]+pane[i-1][j];
-    pane[i-1][j]=0;
+    board[i][j]=board[i][j]+board[i-1][j];
+    board[i-1][j]=0;
     flag=1;
    }
   }
@@ -97,10 +97,10 @@ int leftmove() //Shift to the left
  for(int i=0;i<=3;i++)
   for(int j=0;j<3;j++)
   {
-   if(if2n(pane[i][j]+pane[i][j+1])==1)
+   if(if2n(board[i][j]+board[i][j+1])==1)
    {
-    pane[i][j]=pane[i][j]+pane[i][j+1];
-    pane[i][j+1]=0;
+    board[i][j]=board[i][j]+board[i][j+1];
+    board[i][j+1]=0;
     flag=1;
    }
   }
@@ -112,10 +112,10 @@ int rightmove() //Moves to the right
  for(int i=0;i<=3;i++)
   for(int j=3;j>0;j--)
   {
-   if(if2n(pane[i][j]+pane[i][j-1])==1)
+   if(if2n(board[i][j]+board[i][j-1])==1)
    {
-    pane[i][j]=pane[i][j]+pane[i][j-1];
-    pane[i][j-1]=0;
+    board[i][j]=board[i][j]+board[i][j-1];
+    board[i][j-1]=0;
     flag=1;
    }
   }
@@ -127,7 +127,7 @@ int testup() // whether Move up test
  for(int j=0;j<=3;j++)
   for(int i=0;i<3;i++)
   {
-   if((if2n(pane[i][j]+pane[i+1][j])==1)&&pane[i+1][j])
+   if((if2n(board[i][j]+board[i+1][j])==1)&&board[i+1][j])
    {
     flag=1;
    }
@@ -140,7 +140,7 @@ int testdown() // To test whether Move down
  for(int j=0;j<=3;j++)
   for(int i=3;i>0;i--)
   {
-   if((if2n(pane[i][j]+pane[i-1][j])==1)&&pane[i-1][j])
+   if((if2n(board[i][j]+board[i-1][j])==1)&&board[i-1][j])
    {
     flag=1;
    }
@@ -153,7 +153,7 @@ int testleft() // To test whether Shift to the left
  for(int i=0;i<=3;i++)
   for(int j=0;j<3;j++)
   {
-   if((if2n(pane[i][j]+pane[i][j+1])==1)&&pane[i][j+1])
+   if((if2n(board[i][j]+board[i][j+1])==1)&&board[i][j+1])
    {
     flag=1;
    }
@@ -166,26 +166,26 @@ int testright() // To test whether Moves to the right
  for(int i=0;i<=3;i++)
   for(int j=3;j>0;j--)
   {
-   if((if2n(pane[i][j]+pane[i][j-1])==1)&&pane[i][j-1])
+   if((if2n(board[i][j]+board[i][j-1])==1)&&board[i][j-1])
    {
     flag=1;
    }
   }
  return flag;
 }
-int panemax() //The board Maximum number 
+int boardmax() //The board Maximum number 
 {
- int max=pane[0][0];
+ int max=board[0][0];
  for(int i=0;i<=3;i++)
   for(int j=0;j<=3;j++)
-   if(pane[i][j]>max)
-    max=pane[i][j];
+   if(board[i][j]>max)
+    max=board[i][j];
  return max;
 }
 int ifwin() //Judge victory
 {
  int flag=0;
- if(panemax()==2048)
+ if(boardmax()==2048)
  {
   cout<<setw(45)<<"You Win!"<<endl;
   flag=1;
@@ -213,9 +213,9 @@ void addnewnumberup() //Move up Add a new number after
  int newnumber=pow(2,n);
  for(int i=3;i>=0;i--)
   for(int j=0;j<=3;j++)
-   if(pane[i][j]==0)
+   if(board[i][j]==0)
    {
-    pane[i][j]=newnumber;
+    board[i][j]=newnumber;
     return;
    }
 }
@@ -230,9 +230,9 @@ void addnewnumberdown() //Move down Add a new number after
  int newnumber=pow(2,n);
  for(int i=0;i<=3;i++)
   for(int j=0;j<=3;j++)
-   if(pane[i][j]==0)
+   if(board[i][j]==0)
    {
-    pane[i][j]=newnumber;
+    board[i][j]=newnumber;
     return;
    }
 }
@@ -247,9 +247,9 @@ void addnewnumberleft() //Shift to the left Add a new number after
  int newnumber=pow(2,n);
  for(int j=3;j>=0;j--)
   for(int i=0;i<=3;i++)
-   if(pane[i][j]==0)
+   if(board[i][j]==0)
    {
-    pane[i][j]=newnumber;
+    board[i][j]=newnumber;
     return;
    }
 }
@@ -264,9 +264,9 @@ void addnewnumberright() //Moves to the right Add a new number after
  int newnumber=pow(2,n);
  for(int j=0;j<=3;j++)
   for(int i=0;i<=3;i++)
-   if(pane[i][j]==0)
+   if(board[i][j]==0)
    {
-    pane[i][j]=newnumber;
+    board[i][j]=newnumber;
     return;
    }
 }
@@ -317,7 +317,7 @@ int main() //The main function
     { upmove();
      addnewnumberup();
      system("cls");
-     showpane();
+     showboard();
     }
     break;
    case 4:
@@ -326,7 +326,7 @@ int main() //The main function
      downmove();
      addnewnumberdown();
      system("cls");
-     showpane();
+     showboard();
     }
     break;
    case 1:
@@ -335,7 +335,7 @@ int main() //The main function
      leftmove();
      addnewnumberleft();
      system("cls");
-     showpane();
+     showboard();
     }
     break;
    case 3:
@@ -344,14 +344,14 @@ int main() //The main function
      rightmove();
      addnewnumberright();
      system("cls");
-     showpane();
+     showboard();
     }
     break;
    default:   
     break;
    }
   }
-  cout<<setw(43)<<" Your final score is: "<<panemax()<<endl;
+  cout<<setw(43)<<" Your final score is: "<<boardmax()<<endl;
   cout<<setw(60)<<" If want to Start the game Please enter the 1 , please enter to end 0 . "<<endl;
   cin>>makesure;
   while(makesure!=1&&makesure!=0)
